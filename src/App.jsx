@@ -1,6 +1,8 @@
 // npm modules
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setProfile } from './features/profile/profileSlice'
 
 // page components
 import Signup from './pages/Signup/Signup'
@@ -22,6 +24,12 @@ import './App.css'
 const App = () => {
   const [user, setUser] = useState(authService.getUser())
   const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setProfile())
+  }, [user])
 
   const handleLogout = () => {
     authService.logout()
