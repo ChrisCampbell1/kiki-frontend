@@ -4,12 +4,14 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setProfile } from './features/profile/profileSlice'
 
+
 // page components
 import Signup from './pages/Signup/Signup'
 import Login from './pages/Login/Login'
 import Landing from './pages/Landing/Landing'
 import Profiles from './pages/Profiles/Profiles'
 import ChangePassword from './pages/ChangePassword/ChangePassword'
+import CreateEvent from './pages/CreateEvent/CreateEvent'
 
 // components
 import NavBar from './components/NavBar/NavBar'
@@ -67,6 +69,14 @@ const App = () => {
           element={
             <ProtectedRoute user={user}>
               <ChangePassword handleSignupOrLogin={handleSignupOrLogin} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events/new"
+          element={
+            <ProtectedRoute user={user}>
+              <CreateEvent />
             </ProtectedRoute>
           }
         />
