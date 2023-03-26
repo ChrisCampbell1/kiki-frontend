@@ -1,5 +1,4 @@
 // npm modules
-import { useState } from 'react'
 
 
 // page components
@@ -15,7 +14,8 @@ import CreateEventForm from '../../components/CreateEventForm/CreateEventForm'
 import styles from './CreateEvent.module.css'
 
 export default function CreateEvent() {
-  
+
+
   return (
     <div>
       <h1>This is a Create Event Page</h1>
