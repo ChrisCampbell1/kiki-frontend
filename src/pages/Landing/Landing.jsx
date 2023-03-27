@@ -10,6 +10,14 @@ const Landing = ({ user, location }) => {
     zoom: 10
   })
 
+  useEffect(() => {
+    setViewState({
+      latitude: location.lat,
+      longitude: location.lng,
+      zoom: 10
+    })
+  }, [])
+
   const [kikis, setKikis] = useState([])
 
   useEffect(() => {
@@ -19,6 +27,7 @@ const Landing = ({ user, location }) => {
     }
     getAllKikis()
   }, [])
+
 
 
   return (
@@ -31,13 +40,13 @@ const Landing = ({ user, location }) => {
         mapStyle="mapbox://styles/mapbox/dark-v11"
         mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
       >
-        {/* {kikis.map((kiki) => 
+        {kikis.map((kiki) => 
           <Marker 
           key={kiki._id}
           latitude={kiki.geoLocation[1]}
           longitude={kiki.geoLocation[0]}
           />
-        )} */}
+        )}
       </Map>
     </main>
   )
