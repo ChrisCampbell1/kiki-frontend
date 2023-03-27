@@ -13,13 +13,13 @@ import CreateEventForm from '../../components/CreateEventForm/CreateEventForm'
 // styles
 import styles from './CreateEvent.module.css'
 
-export default function CreateEvent() {
+export default function CreateEvent({ location }) {
 
 
   return (
     <div>
       <h1>This is a Create Event Page</h1>
-      <CreateEventForm />
+      <CreateEventForm location={location}/>
     </div>
   )
 }

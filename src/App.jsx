@@ -25,12 +25,46 @@ import './App.css'
 
 const App = () => {
   const [user, setUser] = useState(authService.getUser())
+  const [location, setLocation] = useState({
+    lat: 0,
+    lng: 0
+  })
+
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
 
+  //stores profile in redux store
   useEffect(() => {
     dispatch(setProfile())
+  }, [user])
+
+  //updates location state on app component
+  useEffect(() => {
+    const options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        };
+  
+        function success(pos) {
+          const crd = pos.coords;
+          console.log("Your current position is:");
+          console.log(`Latitude : ${crd.latitude}`);
+          console.log(`Longitude: ${crd.longitude}`);
+          console.log(`More or less ${crd.accuracy} meters.`);
+          console.log(crd, "crd")
+          setLocation({
+            lat: crd.latitude,
+            lng: crd.longitude
+          })
+        }
+  
+        function error(err) {
+          console.warn(`ERROR(${err.code}): ${err.message}`);
+        }
+  
+        navigator.geolocation.getCurrentPosition(success, error, options);
   }, [user])
 
   const handleLogout = () => {
@@ -76,7 +110,7 @@ const App = () => {
           path="/events/new"
           element={
             <ProtectedRoute user={user}>
-              <CreateEvent />
+              <CreateEvent location={location}/>
             </ProtectedRoute>
           }
         />
