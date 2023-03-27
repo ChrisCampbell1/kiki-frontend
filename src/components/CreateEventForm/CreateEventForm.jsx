@@ -84,8 +84,27 @@ export default function CreateEventForm({ location }) {
           <input type='datetime-local' id="date-input" name="date" onChange={handleChange} />
         </div>
         <div className="inputContainer">
-          <label htmlFor="geoLocation-input">Location</label>
-          <input type="text" name="geoLocation" id="geoLocation-input" onChange={handleChange} />
+          <label htmlFor="geoLocation-input">Drag the pin to your kiki's location</label>
+          <Map
+            initialViewState={viewState}
+            onMove={evt => setViewState(evt.viewState)}
+            style={{ width: 400, height: 400 }}
+            mapStyle="mapbox://styles/mapbox/dark-v11"
+            mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+            id="geoLocation-input"
+          >
+            <Marker
+              draggable={true}
+              latitude={location.lat}
+              longitude={location.lng}
+              onDragEnd={(evt) => {
+                setFormData({ ...formData, geoLocation: [evt.lngLat.lng, evt.lngLat.lat] })
+                location.lat = evt.lngLat.lat
+                location.lng = evt.lngLat.lng
+              }}
+            >
+            </Marker>
+          </Map>
         </div>
         <div className="inputContainer">
           <label htmlFor="address-input">Address</label>
@@ -97,13 +116,7 @@ export default function CreateEventForm({ location }) {
         </div>
         <button type="submit">Save Kiki</button>
       </form>
-      <Map
-    initialViewState={viewState}
-    onMove={evt => setViewState(evt.viewState)}
-    style={{width: 800, height: 600}}
-    mapStyle="mapbox://styles/mapbox/streets-v9"
-    mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-  />
+
     </div>
   )
 }

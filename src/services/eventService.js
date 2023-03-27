@@ -17,4 +17,15 @@ const createEvent = async (formData) => {
   
 }
 
-export {createEvent}
+const getAllEvents = async () => {
+  try {
+    const res = await fetch(BASE_URL, {
+      method: 'GET'
+    })
+    return res.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export {createEvent, getAllEvents}
