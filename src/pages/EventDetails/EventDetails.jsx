@@ -1,6 +1,7 @@
 import styles from './EventDetails.module.css'
 import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import * as eventService from '../../services/eventService'
 
 export default function EventDetails({ user }) {
   const location = useLocation()
@@ -16,6 +17,11 @@ export default function EventDetails({ user }) {
   console.log(location)
 
   const kiki = location.state
+
+  const handleDeleteClick = async(evt) => {
+    await eventService.deleteEvent(kiki._id)
+    navigate('/')
+  } 
   
   return (
     <div>
@@ -25,6 +31,13 @@ export default function EventDetails({ user }) {
       <button>
         Request Invite
       </button>
+      {kiki.host._id === user.profile &&
+        <button
+          onClick={() => handleDeleteClick()}
+        >
+          Delete Kiki
+        </button>
+      }
     </div>
   )
 }
