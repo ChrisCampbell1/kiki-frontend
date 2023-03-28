@@ -12,6 +12,7 @@ import Landing from './pages/Landing/Landing'
 import Profiles from './pages/Profiles/Profiles'
 import ChangePassword from './pages/ChangePassword/ChangePassword'
 import CreateEvent from './pages/CreateEvent/CreateEvent'
+import EventDetails from './pages/EventDetails/EventDetails'
 
 // components
 import NavBar from './components/NavBar/NavBar'
@@ -111,6 +112,14 @@ const App = () => {
           element={
             <ProtectedRoute user={user}>
               <CreateEvent location={location}/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events/:id"
+          element={
+            <ProtectedRoute user={user}>
+              <EventDetails user={user}/>
             </ProtectedRoute>
           }
         />

@@ -2,6 +2,7 @@ import styles from './Landing.module.css'
 import Map, { Marker, Popup, GeolocateControl } from 'react-map-gl'
 import { useState, useEffect } from 'react'
 import * as eventService from '../../services/eventService'
+import { Link } from 'react-router-dom'
 
 const Landing = ({ user, location }) => {
   const [viewState, setViewState] = useState({
@@ -47,12 +48,18 @@ const Landing = ({ user, location }) => {
             latitude={kiki.geoLocation[1]}
             longitude={kiki.geoLocation[0]}
           >
-            <button onClick={(e) => {
+            <button 
+            className={styles.detailsBtn}
+            onClick={(e) => {
               e.stopPropagation()
-              setSelectedKiki(kiki)
+              if(selectedKiki === null) {
+                setSelectedKiki(kiki)
+              } else {
+                setSelectedKiki(null)
+              }
               console.log(selectedKiki)
             }}>
-              Details
+              {kiki.category}
             </button>
           </Marker>
         )}
@@ -67,8 +74,26 @@ const Landing = ({ user, location }) => {
           // latitude={`${selectedKiki.geoLocation[1]}`}
           // longitude={`${selectedKiki.geoLocation[0]}`}
           >
-            <h3>{selectedKiki.title}</h3>
-            <p>{selectedKiki.description}</p>
+            <div className={styles.popup}>
+              <Link to={`/events/${selectedKiki._id}`} state={selectedKiki}>
+                <h3>{selectedKiki.title}</h3>
+              </Link>
+              <p>{selectedKiki.description}</p>
+              <p>Confirmed Guests: {selectedKiki.approvedGuests.length}</p>
+              <button>Request Invite</button>
+              {user.profile === selectedKiki.host._id &&
+                <p>
+                  <Link to={`/events/${selectedKiki._id}/edit`}>
+                    Edit Kiki
+                  </Link>
+                </p>
+              }
+              <h3>Hosted By:</h3>
+              <Link to={`/profiles/${selectedKiki.host._id}`}>
+                <img src={selectedKiki.host.photo} alt="host's avatar" />
+                <p>{selectedKiki.host.name}</p>
+              </Link>
+            </div>
           </Popup>)
 
         }

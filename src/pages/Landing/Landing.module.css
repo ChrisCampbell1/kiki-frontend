@@ -3,3 +3,18 @@
   align-items: center;
   flex-direction: column;
 }
+
+.container .popup img {
+  border-radius: 50rem;
+  height: 4rem;
+  object-fit: cover;
+}
+
+.container .detailsBtn {
+  background-color: #61dafb;
+  color: black;
+  border: none;
+  padding: .5rem;
+  font-weight: bold;
+  border-radius: 5px;
+}
