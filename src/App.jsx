@@ -13,6 +13,7 @@ import Profiles from './pages/Profiles/Profiles'
 import ChangePassword from './pages/ChangePassword/ChangePassword'
 import CreateEvent from './pages/CreateEvent/CreateEvent'
 import EventDetails from './pages/EventDetails/EventDetails'
+import MyEvents from './pages/MyEvents/MyEvents'
 
 // components
 import NavBar from './components/NavBar/NavBar'
@@ -120,6 +121,14 @@ const App = () => {
           element={
             <ProtectedRoute user={user}>
               <EventDetails user={user}/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events/my-events"
+          element={
+            <ProtectedRoute user={user}>
+              <MyEvents user={user}/>
             </ProtectedRoute>
           }
         />

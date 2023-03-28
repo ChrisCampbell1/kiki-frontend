@@ -2,10 +2,10 @@ import styles from './Landing.module.css'
 import Map, { Marker, Popup, GeolocateControl } from 'react-map-gl'
 import { useState, useEffect } from 'react'
 import * as eventService from '../../services/eventService'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Landing = ({ user, location }) => {
-
+  const navigate = useNavigate()
   const lat = location.lat
   const lng = location.lng
 
@@ -30,6 +30,12 @@ const Landing = ({ user, location }) => {
     }
     getAllKikis()
   }, [])
+
+  const handleRequestClick = async (id) => {
+    console.log(id)
+    await eventService.requestInvite(id)
+    navigate(`/events/my-events`)
+  }
 
   return (
     <main className={styles.container}>
@@ -78,7 +84,11 @@ const Landing = ({ user, location }) => {
                 </Link>
                 <p>{selectedKiki.description}</p>
                 <p>Confirmed Guests: {selectedKiki.approvedGuests.length}</p>
-                <button>Request Invite</button>
+                <button
+                onClick={() => handleRequestClick(selectedKiki._id)}
+                >
+                  Request Invite
+                </button>
                 {user.profile === selectedKiki.host._id &&
                   <p>
                     <Link to={`/events/${selectedKiki._id}/edit`}>

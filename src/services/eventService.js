@@ -41,4 +41,17 @@ const deleteEvent = async (id) => {
   }
 }
 
-export {createEvent, getAllEvents, deleteEvent}
+const requestInvite = async (id) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${id}/requestInvite`, {
+      method: 'PUT',
+      headers: { 
+        'Authorization': `Bearer ${tokenService.getToken()}` },
+    })
+    return res.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export {createEvent, getAllEvents, deleteEvent, requestInvite}
