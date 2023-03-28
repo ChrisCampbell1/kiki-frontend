@@ -1,5 +1,5 @@
 import styles from './Landing.module.css'
-import { Map, Marker } from 'react-map-gl'
+import Map, { Marker, Popup, GeolocateControl } from 'react-map-gl'
 import { useState, useEffect } from 'react'
 import * as eventService from '../../services/eventService'
 
@@ -9,6 +9,8 @@ const Landing = ({ user, location }) => {
     longitude: location.lng,
     zoom: 10
   })
+
+  const [selectedKiki, setSelectedKiki] = useState(null)
 
   useEffect(() => {
     setViewState({
@@ -28,8 +30,6 @@ const Landing = ({ user, location }) => {
     getAllKikis()
   }, [])
 
-
-
   return (
     <main className={styles.container}>
       <h1>hello, {user ? user.name : 'friend'}, let's have a kiki!</h1>
@@ -40,13 +40,39 @@ const Landing = ({ user, location }) => {
         mapStyle="mapbox://styles/mapbox/dark-v11"
         mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
       >
-        {kikis.map((kiki) => 
-          <Marker 
-          key={kiki._id}
-          latitude={kiki.geoLocation[1]}
-          longitude={kiki.geoLocation[0]}
-          />
+        <GeolocateControl position='top-left' />
+        {kikis.map((kiki) =>
+          <Marker
+            key={kiki._id}
+            latitude={kiki.geoLocation[1]}
+            longitude={kiki.geoLocation[0]}
+          >
+            <button onClick={(e) => {
+              e.stopPropagation()
+              setSelectedKiki(kiki)
+              console.log(selectedKiki)
+            }}>
+              Details
+            </button>
+          </Marker>
         )}
+
+        {
+          selectedKiki &&
+          (<Popup
+            latitude={selectedKiki.geoLocation[1]}
+            longitude={selectedKiki.geoLocation[0]}
+            onClose={() => setSelectedKiki(null)}
+            closeOnClick
+          // latitude={`${selectedKiki.geoLocation[1]}`}
+          // longitude={`${selectedKiki.geoLocation[0]}`}
+          >
+            <h3>{selectedKiki.title}</h3>
+            <p>{selectedKiki.description}</p>
+          </Popup>)
+
+        }
+
       </Map>
     </main>
   )
