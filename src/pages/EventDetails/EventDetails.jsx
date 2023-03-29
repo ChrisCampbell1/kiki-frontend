@@ -1,7 +1,20 @@
-import styles from './EventDetails.module.css'
+// npm modules
 import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+
+
+
+
+// components
+import ProfileContainer from '../../components/ProfileContainer/ProfileContainer'
+
+
+// services
 import * as eventService from '../../services/eventService'
+
+
+// styles
+import styles from './EventDetails.module.css'
 
 export default function EventDetails({ user }) {
   const location = useLocation()
@@ -9,28 +22,41 @@ export default function EventDetails({ user }) {
   const [approved, setApproved] = useState(false)
 
   useEffect(() => {
-    if(kiki.approvedGuests.includes(user.profile)) {
-      setApproved(true)
-    }
+    kiki.approvedGuests.forEach((guest) => {
+      if(guest._id === user.profile) {
+        setApproved(true)
+      }
+    })
   },[])
 
-  console.log(location)
 
   const kiki = location.state
+
+  console.log(kiki, "kiki from location")
 
   const handleDeleteClick = async(evt) => {
     await eventService.deleteEvent(kiki._id)
     navigate('/')
   } 
   
+  const handleRequestClick = async (id) => {
+    console.log(id)
+    await eventService.requestInvite(id)
+    navigate(`/events/my-events`)
+  }
+
   return (
-    <div>
+    <main>
       <h1>{kiki.title}</h1>
       <p>{kiki.description}</p>
       <p>Confirmed Guests: {kiki.approvedGuests.length}</p>
-      <button>
-        Request Invite
-      </button>
+      {kiki.host._id !== user.profile &&
+        <button
+          onClick={() => handleRequestClick(kiki._id)}
+        >
+          Request Invite
+        </button>
+      }
       {kiki.host._id === user.profile &&
         <button
           onClick={() => handleDeleteClick()}
@@ -38,6 +64,19 @@ export default function EventDetails({ user }) {
           Delete Kiki
         </button>
       }
-    </div>
+
+      {approved &&
+        <>
+          <h3>Attendees</h3>
+          <ProfileContainer guests={kiki.approvedGuests}/>
+        </>
+      }
+      {kiki.host._id === user.profile &&
+        <>
+          <h3>Pending Invites</h3>
+          <ProfileContainer guests={kiki.pendingGuests}/>
+        </>
+      }
+    </main>
   )
 }
