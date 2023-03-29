@@ -1,10 +1,24 @@
-import styles from './Landing.module.css'
+// npm modules
 import Map, { Marker, Popup, GeolocateControl } from 'react-map-gl'
 import { useState, useEffect } from 'react'
-import * as eventService from '../../services/eventService'
 import { Link, useNavigate } from 'react-router-dom'
 
-const Landing = ({ user, location }) => {
+
+
+
+
+// components
+
+
+
+// services
+import * as eventService from '../../services/eventService'
+
+
+// styles
+import styles from './Landing.module.css'
+
+const Landing = ({ user, location, kikis }) => {
   const navigate = useNavigate()
   const lat = location.lat
   const lng = location.lng
@@ -19,17 +33,6 @@ const Landing = ({ user, location }) => {
 
   const [selectedKiki, setSelectedKiki] = useState(null)
 
-
-
-  const [kikis, setKikis] = useState([])
-
-  useEffect(() => {
-    const getAllKikis = async () => {
-      const kikis = await eventService.getAllEvents()
-      setKikis(kikis)
-    }
-    getAllKikis()
-  }, [])
 
   const handleRequestClick = async (id) => {
     console.log(id)

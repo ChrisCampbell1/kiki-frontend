@@ -19,7 +19,7 @@ import styles from './MyEvents.module.css'
 
 
 
-export default function MyEvents({ user }) {
+export default function MyEvents({ user, kikis, setKikis }) {
   const [hostedKikis, setHostedKikis] = useState([])
   const [acceptedKikis, setAcceptedKikis] = useState([])
   const [pendingKikis, setPendingKikis] = useState([])
@@ -27,18 +27,18 @@ export default function MyEvents({ user }) {
 
   useEffect(() => {
     const getHostedKikis = async () => {
-      const kikis = await eventService.getAllEvents()
-      console.log(kikis, "all kikis")
+      // const kikis = await eventService.getAllEvents()
+      // console.log(kikis, "all kikis")
       const hostedKikis = kikis.filter((kiki) => kiki.host._id === user.profile)
       setHostedKikis(hostedKikis)
-      console.log(hostedKikis, "hostedKikis")
+      // console.log(hostedKikis, "hostedKikis")
     }
     getHostedKikis()
   }, [])
 
   useEffect(() => {
     const getAcceptedKikis = async () => {
-      const kikis = await eventService.getAllEvents()
+      // const kikis = await eventService.getAllEvents()
       const acceptedKikis = []
       kikis.forEach((kiki) => {
         kiki.approvedGuests.forEach((guest) => {
@@ -48,14 +48,14 @@ export default function MyEvents({ user }) {
         })
       })
       setAcceptedKikis(acceptedKikis)
-      console.log(acceptedKikis, "acceptedKikis")
+      // console.log(acceptedKikis, "acceptedKikis")
     }
     getAcceptedKikis()
   }, [])
 
   useEffect(() => {
     const getPendingKikis = async () => {
-      const kikis = await eventService.getAllEvents()
+      // const kikis = await eventService.getAllEvents()
       const pendingKikis = []
       kikis.forEach((kiki) => {
         kiki.pendingGuests.forEach((guest) => {
@@ -65,7 +65,7 @@ export default function MyEvents({ user }) {
         })
       })
       setPendingKikis(pendingKikis)
-      console.log(pendingKikis, "pendingKikis")
+      // console.log(pendingKikis, "pendingKikis")
     }
     getPendingKikis()
   }, [])

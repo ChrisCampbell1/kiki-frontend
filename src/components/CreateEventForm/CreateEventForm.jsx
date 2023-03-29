@@ -16,7 +16,7 @@ import * as eventService from '../../services/eventService'
 // styles
 import styles from './CreateEventForm.module.css'
 
-export default function CreateEventForm({ location }) {
+export default function CreateEventForm({ location, setKikis, kikis }) {
 
   const [viewState, setViewState] = useState({
     latitude: location.lat,
@@ -44,6 +44,7 @@ export default function CreateEventForm({ location }) {
     evt.preventDefault()
     try {
       const kiki = await eventService.createEvent(formData)
+      setKikis([...kikis, kiki])
       navigate('/')
     } catch (error) {
       console.log(error)

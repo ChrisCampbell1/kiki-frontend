@@ -16,7 +16,7 @@ import * as eventService from '../../services/eventService'
 // styles
 import styles from './EventDetails.module.css'
 
-export default function EventDetails({ user }) {
+export default function EventDetails({ user, setKikis, kikis }) {
   const location = useLocation()
   const navigate = useNavigate()
   const [approved, setApproved] = useState(false)
@@ -35,13 +35,15 @@ export default function EventDetails({ user }) {
   console.log(kiki, "kiki from location")
 
   const handleDeleteClick = async(evt) => {
-    await eventService.deleteEvent(kiki._id)
+    const event = await eventService.deleteEvent(kiki._id)
+    setKikis(kikis.filter((kiki) => kiki._id !== event._id))
     navigate('/')
   } 
   
   const handleRequestClick = async (id) => {
-    console.log(id)
-    await eventService.requestInvite(id)
+    const event = await eventService.requestInvite(id)
+    let updatedKikis = kikis.filter((kiki) => kiki._id !== event._id)
+    setKikis([...updatedKikis, event])
     navigate(`/events/my-events`)
   }
 
@@ -68,13 +70,13 @@ export default function EventDetails({ user }) {
       {approved &&
         <>
           <h3>Attendees</h3>
-          <ProfileContainer guests={kiki.approvedGuests} type={"approved"} user={user} kiki={kiki}/>
+          <ProfileContainer guests={kiki.approvedGuests} type={"approved"} user={user} kiki={kiki} setKikis={setKikis} kikis={kikis}/>
         </>
       }
       {kiki.host._id === user.profile &&
         <>
           <h3>Pending Invites</h3>
-          <ProfileContainer guests={kiki.pendingGuests} type={"pending"} user={user} kiki={kiki}/>
+          <ProfileContainer guests={kiki.pendingGuests} type={"pending"} user={user} kiki={kiki} setKikis={setKikis} kikis={kikis}/>
         </>
       }
     </main>

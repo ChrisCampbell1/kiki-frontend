@@ -14,11 +14,11 @@ import ProfileCard from '../ProfileCard/ProfileCard'
 import styles from './ProfileContainer.module.css'
 
 
-export default function ProfileContainer({ guests, type, user, kiki }) {
+export default function ProfileContainer({ guests, type, user, kiki, setKikis, kikis }) {
   return (
     <div className={styles.ProfileContainer}>
       {guests.map((guest) => 
-        <ProfileCard key={guest._id} guest={guest} type={type} user={user} kiki={kiki}/>
+        <ProfileCard key={guest._id} guest={guest} type={type} user={user} kiki={kiki} setKikis={setKikis} kikis={kikis}/>
       )}
     </div>
   )

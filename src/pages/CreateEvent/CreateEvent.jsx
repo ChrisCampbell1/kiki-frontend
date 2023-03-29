@@ -13,13 +13,13 @@ import CreateEventForm from '../../components/CreateEventForm/CreateEventForm'
 // styles
 import styles from './CreateEvent.module.css'
 
-export default function CreateEvent({ location }) {
+export default function CreateEvent({ location, setKikis, kikis }) {
 
 
   return (
     <div>
       <h1>This is a Create Event Page</h1>
-      <CreateEventForm location={location}/>
+      <CreateEventForm location={location} setKikis={setKikis} kikis={kikis} />
     </div>
   )
 }

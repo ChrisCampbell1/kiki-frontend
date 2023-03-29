@@ -21,6 +21,8 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 
 // services
 import * as authService from './services/authService'
+import * as eventService from './services/eventService'
+
 
 // styles
 import './App.css'
@@ -32,8 +34,19 @@ const App = () => {
     lng: 0
   })
 
-  const navigate = useNavigate()
+  //sets state on the app level for all kikis
+  const [kikis, setKikis] = useState([])
 
+  useEffect(() => {
+    const getAllKikis = async () => {
+      const kikis = await eventService.getAllEvents()
+      setKikis(kikis)
+    }
+    getAllKikis()
+  }, [])
+
+  //functions from hooks
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   //stores profile in redux store
@@ -83,7 +96,7 @@ const App = () => {
     <>
       <NavBar user={user} handleLogout={handleLogout} />
       <Routes>
-        <Route path="/" element={<Landing user={user} location={location}/>} />
+        <Route path="/" element={<Landing user={user} location={location} kikis={kikis}/>} />
         <Route
           path="/signup"
           element={<Signup handleSignupOrLogin={handleSignupOrLogin} />}
@@ -112,7 +125,7 @@ const App = () => {
           path="/events/new"
           element={
             <ProtectedRoute user={user}>
-              <CreateEvent location={location}/>
+              <CreateEvent location={location} setKikis={setKikis} kikis={kikis}/>
             </ProtectedRoute>
           }
         />
@@ -120,7 +133,7 @@ const App = () => {
           path="/events/:id"
           element={
             <ProtectedRoute user={user}>
-              <EventDetails user={user}/>
+              <EventDetails user={user} kikis={kikis} setKikis={setKikis}/>
             </ProtectedRoute>
           }
         />
@@ -128,7 +141,7 @@ const App = () => {
           path="/events/my-events"
           element={
             <ProtectedRoute user={user}>
-              <MyEvents user={user}/>
+              <MyEvents user={user} kikis={kikis} setKikis={setKikis}/>
             </ProtectedRoute>
           }
         />

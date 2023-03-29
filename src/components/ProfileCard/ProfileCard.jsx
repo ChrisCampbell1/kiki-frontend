@@ -16,12 +16,12 @@ import * as eventService from '../../services/eventService'
 import styles from './ProfileCard.module.css'
 
 
-export default function ProfileCard({ guest, type, user, kiki }) {
-  const [approveClick, setApproveClick] = useState(0)
+export default function ProfileCard({ guest, type, user, kiki, setKikis, kikis }) {
 
   const handleApproveClick = async (kikiId, guestId) => {
-    await eventService.approveInvite(kikiId, guestId)
-    setApproveClick(approveClick + 1)
+    const event = await eventService.approveInvite(kikiId, guestId)
+    setKikis(kikis.filter((el) => el._id !== event._id))
+    setKikis([...kikis, event])
   }
 
   return (
