@@ -68,13 +68,13 @@ export default function EventDetails({ user }) {
       {approved &&
         <>
           <h3>Attendees</h3>
-          <ProfileContainer guests={kiki.approvedGuests}/>
+          <ProfileContainer guests={kiki.approvedGuests} type={"approved"} user={user} kiki={kiki}/>
         </>
       }
       {kiki.host._id === user.profile &&
         <>
           <h3>Pending Invites</h3>
-          <ProfileContainer guests={kiki.pendingGuests}/>
+          <ProfileContainer guests={kiki.pendingGuests} type={"pending"} user={user} kiki={kiki}/>
         </>
       }
     </main>
