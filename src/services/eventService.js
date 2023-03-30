@@ -67,4 +67,17 @@ const approveInvite = async(kikiId, guestId) => {
   }
 }
 
-export {createEvent, getAllEvents, deleteEvent, requestInvite, approveInvite}
+const fetchEvent = async(id) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${tokenService.getToken()}`}
+    })
+    return res.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export {createEvent, getAllEvents, deleteEvent, requestInvite, approveInvite, fetchEvent}

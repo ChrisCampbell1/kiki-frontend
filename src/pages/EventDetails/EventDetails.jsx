@@ -1,5 +1,5 @@
 // npm modules
-import { useLocation, Link, useNavigate } from 'react-router-dom'
+import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
 
@@ -17,22 +17,32 @@ import * as eventService from '../../services/eventService'
 import styles from './EventDetails.module.css'
 
 export default function EventDetails({ user, setKikis, kikis }) {
-  const location = useLocation()
+  // const location = useLocation()
   const navigate = useNavigate()
   const [approved, setApproved] = useState(false)
+  const [kiki, setKiki] = useState(null)
+  const { id } = useParams()
+
+  // useEffect(() => {
+  //   kiki.approvedGuests.forEach((guest) => {
+  //     if(guest._id === user.profile) {
+  //       setApproved(true)
+  //     }
+  //   })
+  // },[])
 
   useEffect(() => {
-    kiki.approvedGuests.forEach((guest) => {
-      if(guest._id === user.profile) {
-        setApproved(true)
-      }
-    })
-  },[])
-
-
-  const kiki = location.state
-
-  console.log(kiki, "kiki from location")
+    const fetchKiki = async () => {
+      const kiki = await eventService.fetchEvent(id)
+      setKiki(kiki)
+      kiki.approvedGuests.forEach((guest) => {
+        if(guest._id === user.profile) {
+          setApproved(true)
+        }
+      })
+    }
+    fetchKiki()
+  }, [])
 
   const handleDeleteClick = async(evt) => {
     const event = await eventService.deleteEvent(kiki._id)
@@ -45,6 +55,12 @@ export default function EventDetails({ user, setKikis, kikis }) {
     let updatedKikis = kikis.filter((kiki) => kiki._id !== event._id)
     setKikis([...updatedKikis, event])
     navigate(`/events/my-events`)
+  }
+
+  if (!kiki) {
+    return(
+      <h1>Loading...</h1>
+    )
   }
 
   return (
