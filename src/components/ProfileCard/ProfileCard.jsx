@@ -1,6 +1,6 @@
 // npm modules
 import { useState } from 'react'
-
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -16,12 +16,23 @@ import * as eventService from '../../services/eventService'
 import styles from './ProfileCard.module.css'
 
 
-export default function ProfileCard({ guest, type, user, kiki, setKikis, kikis }) {
+export default function ProfileCard({ guest, type, user, kiki, setKikis, kikis, setKiki }) {
+  const navigate = useNavigate()
 
   const handleApproveClick = async (kikiId, guestId) => {
     const event = await eventService.approveInvite(kikiId, guestId)
     setKikis(kikis.filter((el) => el._id !== event._id))
     setKikis([...kikis, event])
+    setKiki(event)
+    navigate(`/events/${kiki._id}`)
+  }
+
+  const handleRemoveClick = async (kikiId, guestId) => {
+    const event = await eventService.removeInvite(kikiId, guestId)
+    setKikis(kikis.filter((el) => el._id !== event._id))
+    setKikis([...kikis, event])
+    setKiki(event)
+    navigate(`/events/${kiki._id}`)
   }
 
   return (
@@ -36,7 +47,9 @@ export default function ProfileCard({ guest, type, user, kiki, setKikis, kikis }
         </button>
       }
       {type === "approved" && guest._id !== user.profile &&
-        <button>
+        <button
+          onClick={() => handleRemoveClick(kiki._id, guest._id)}
+        >
           Remove Invite
         </button>
       }
