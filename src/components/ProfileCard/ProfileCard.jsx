@@ -21,16 +21,20 @@ export default function ProfileCard({ guest, type, user, kiki, setKikis, kikis, 
 
   const handleApproveClick = async (kikiId, guestId) => {
     const event = await eventService.approveInvite(kikiId, guestId)
-    setKikis(kikis.filter((el) => el._id !== event._id))
-    setKikis([...kikis, event])
+    // setKikis(kikis.filter((el) => el._id !== event._id))
+    // setKikis([...kikis, event])
+    const updatedKikis = kikis.filter((el) => el._id !== event._id)
+    setKikis([...updatedKikis, event])
     setKiki(event)
     navigate(`/events/${kiki._id}`)
   }
 
   const handleRemoveClick = async (kikiId, guestId) => {
     const event = await eventService.removeInvite(kikiId, guestId)
-    setKikis(kikis.filter((el) => el._id !== event._id))
-    setKikis([...kikis, event])
+    // setKikis(kikis.filter((el) => el._id !== event._id))
+    // setKikis([...kikis, event])
+    const updatedKikis = kikis.filter((el) => el._id !== event._id)
+    setKikis([...updatedKikis, event])
     setKiki(event)
     navigate(`/events/${kiki._id}`)
   }
