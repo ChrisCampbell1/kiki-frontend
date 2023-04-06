@@ -57,6 +57,7 @@ export default function EventDetails({ user, setKikis, kikis }) {
   return (
     <main>
       <h1>{kiki.title}</h1>
+      <h3>Host: {kiki.host.name}</h3>
       <p>{kiki.description}</p>
       <p>Confirmed Guests: {kiki.approvedGuests.length}</p>
       {kiki.host._id !== user.profile &&

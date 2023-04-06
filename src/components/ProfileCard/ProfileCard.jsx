@@ -39,14 +39,14 @@ export default function ProfileCard({ guest, type, user, kiki, setKikis, kikis, 
     <div className={styles.container}>
       <img src={guest.photo} alt="guest avatar" />
       <p>{guest.name}</p>
-      {type === "pending" &&
+      {type === "pending" && user.profile === kiki.host._id &&
         <button
           onClick={() => handleApproveClick(kiki._id, guest._id)}
         >
           Approve Invite
         </button>
       }
-      {type === "approved" && guest._id !== user.profile &&
+      {type === "approved" && guest._id !== user.profile && user.profile === kiki.host._id &&
         <button
           onClick={() => handleRemoveClick(kiki._id, guest._id)}
         >
