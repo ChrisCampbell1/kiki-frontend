@@ -17,26 +17,17 @@ import * as eventService from '../../services/eventService'
 import styles from './EventDetails.module.css'
 
 export default function EventDetails({ user, setKikis, kikis }) {
-  // const location = useLocation()
   const navigate = useNavigate()
   const [approved, setApproved] = useState(false)
   const [kiki, setKiki] = useState(null)
   const { id } = useParams()
-
-  // useEffect(() => {
-  //   kiki.approvedGuests.forEach((guest) => {
-  //     if(guest._id === user.profile) {
-  //       setApproved(true)
-  //     }
-  //   })
-  // },[])
 
   useEffect(() => {
     const fetchKiki = async () => {
       const kiki = await eventService.fetchEvent(id)
       setKiki(kiki)
       kiki.approvedGuests.forEach((guest) => {
-        if(guest._id === user.profile) {
+        if (guest._id === user.profile) {
           setApproved(true)
         }
       })
@@ -44,12 +35,12 @@ export default function EventDetails({ user, setKikis, kikis }) {
     fetchKiki()
   }, [])
 
-  const handleDeleteClick = async(evt) => {
+  const handleDeleteClick = async (evt) => {
     const event = await eventService.deleteEvent(kiki._id)
     setKikis(kikis.filter((kiki) => kiki._id !== event._id))
     navigate('/')
-  } 
-  
+  }
+
   const handleRequestClick = async (id) => {
     const event = await eventService.requestInvite(id)
     let updatedKikis = kikis.filter((kiki) => kiki._id !== event._id)
@@ -58,7 +49,7 @@ export default function EventDetails({ user, setKikis, kikis }) {
   }
 
   if (!kiki) {
-    return(
+    return (
       <h1>Loading...</h1>
     )
   }
@@ -83,16 +74,17 @@ export default function EventDetails({ user, setKikis, kikis }) {
         </button>
       }
 
+
       {approved &&
         <>
           <h3>Attendees</h3>
-          <ProfileContainer guests={kiki.approvedGuests} type={"approved"} user={user} kiki={kiki} setKikis={setKikis} kikis={kikis} setKiki={setKiki}/>
+          <ProfileContainer guests={kiki.approvedGuests} type={"approved"} user={user} kiki={kiki} setKikis={setKikis} kikis={kikis} setKiki={setKiki} />
         </>
       }
       {kiki.host._id === user.profile &&
         <>
           <h3>Pending Invites</h3>
-          <ProfileContainer guests={kiki.pendingGuests} type={"pending"} user={user} kiki={kiki} setKikis={setKikis} kikis={kikis} setKiki={setKiki}/>
+          <ProfileContainer guests={kiki.pendingGuests} type={"pending"} user={user} kiki={kiki} setKikis={setKikis} kikis={kikis} setKiki={setKiki} />
         </>
       }
     </main>
